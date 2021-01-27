@@ -16,4 +16,13 @@ router.get('/json', async (ctx, next) => {
   }
 })
 
+router.get('/json/:name', async (ctx, next) => {
+    const { name } = ctx.params
+    console.log(JSON.stringify(ctx.query))
+    ctx.body = {
+      title: 'koa2 json',
+      name
+    }
+})
+
 module.exports = router
