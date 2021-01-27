@@ -33,7 +33,7 @@ if (isProd) {
         port: '3306',
         database: 'koa2_weibo_db'
     }
-    
+
 }
 
 module.exports = {

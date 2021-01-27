@@ -15,7 +15,7 @@ const conf = {
 
 // 测试环境
 if (isTest) {
-    conf.logging = () => {}
+    conf.logging = () => { }
 }
 
 // 线上环境，使用连接池
