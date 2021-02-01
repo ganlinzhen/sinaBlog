@@ -9,6 +9,7 @@ const {
     registerUserNameExistInfo,
     registerUserNameNotExistInfo,
     registerFailInfo,
+    loginFailInfo,
 } = require('../model/ErrorInfo')
 
 /**
@@ -47,7 +48,24 @@ async function register ({userName,password,gender}) {
     }
 }
 
+/**
+ * @description 用户登录接口
+ * @ 
+*/
+async function login (ctx, userName, password) {
+    const userInfo = await getUserInfo(userName, doCrypto(password))
+    console.log('用户信息：', userInfo)
+    // 登录失败：用户名或密码不匹配
+    if (userInfo == null) {
+        return new ErrorModel(loginFailInfo)
+    }
+    // 登录成功：将用户信息存入session
+    ctx.session.userInfo = userInfo
+    return new SuccessModel()
+}
+
 module.exports = {
     isExist,
-    register
+    register,
+    login
 }
