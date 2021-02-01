@@ -23,12 +23,19 @@ function getUserInfo (ctx) {
     return data
 }
 
+// 登录页面
 router.get('/login', async (ctx, next) => {
     await ctx.render('login', getUserInfo(ctx))
 })
 
+// 注册页面
 router.get('/register', async (ctx, next) => {
     await ctx.render('register', getUserInfo(ctx))
+})
+
+// 设置页面
+router.get('/setting', async (ctx, next) => {
+    await ctx.render('setting', ctx.session.userInfo)
 })
 
 module.exports = router

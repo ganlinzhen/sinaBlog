@@ -38,7 +38,6 @@ async function loginRedirect (ctx, next) {
     ctx.redirect('/login?url='+encodeURIComponent(curUrl))
 }
 
-
 module.exports = {
     loginCheck,
     loginRedirect,
