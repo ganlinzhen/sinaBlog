@@ -33,7 +33,7 @@ async function saveFile ({ name, type, size, filePath }) {
 
     // 返回信息: 2.png
     return new SuccessModel({
-        url: "/" + fileName
+        url: '/' + fileName
     })
 }
 
