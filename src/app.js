@@ -1,3 +1,4 @@
+const path = require('path')
 const Koa = require('koa')
 const app = new Koa()
 const views = require('koa-views')
@@ -7,6 +8,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require('koa-generic-session')
 const redisStore = require('koa-redis')
+const koaStatic = require('koa-static')
 
 const { REDIS_CONF } = require('./conf/db')
 const { SESSION_SECRET_KEY } = require('./conf/secretKeys')
@@ -14,6 +16,9 @@ const { SESSION_SECRET_KEY } = require('./conf/secretKeys')
 // 路由
 const userViewRouter = require('./routes/views/user')
 const userApiRouter = require('./routes/api/uers')
+const blogViewRouter = require('./routes/views/blog')
+const blogApiRouter = require('./routes/api/blog')
+const utilsApiRouter = require('./routes/api/utils')
 const errorViewRouter = require('./routes/views/error')
 
 
@@ -26,8 +31,8 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'))
-
+app.use(koaStatic(path.join(__dirname + '/public')))
+app.use(koaStatic(path.join(__dirname, '..', 'uploadFiles')))
 // 模板引擎配置
 app.use(views(__dirname + '/views', {
   extension: 'ejs'
@@ -52,6 +57,9 @@ app.use(session({
 // routes
 app.use(userViewRouter.routes(), userViewRouter.allowedMethods())
 app.use(userApiRouter.routes(), userApiRouter.allowedMethods())
+app.use(blogViewRouter.routes(), blogViewRouter.allowedMethods())
+app.use(blogApiRouter.routes(), blogApiRouter.allowedMethods())
+app.use(utilsApiRouter.routes(), utilsApiRouter.allowedMethods())
 app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods())
 
 // error-handling

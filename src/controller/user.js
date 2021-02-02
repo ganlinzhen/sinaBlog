@@ -2,7 +2,11 @@
  * @description user controller
  * @author zhenganlin
 */
-const { getUserInfo, createUser } = require('../service/user')
+const { 
+    getUserInfo,
+    createUser,
+    updateUserInfo,
+} = require('../service/user')
 const { SuccessModel, ErrorModel } = require('../model/ResModel')
 const doCrypto = require('../utils/crypto')
 const {
@@ -10,6 +14,8 @@ const {
     registerUserNameNotExistInfo,
     registerFailInfo,
     loginFailInfo,
+    changeInfoFailInfo,
+    changePasswordFailInfo,
 } = require('../model/ErrorInfo')
 
 /**
@@ -64,8 +70,68 @@ async function login (ctx, userName, password) {
     return new SuccessModel()
 }
 
+
+/**
+ * 用户退出登录
+ * @param {*} ctx
+ */
+async function logout (ctx) {
+    delete ctx.session.userInfo
+    return new SuccessModel()
+}
+
+/**
+ * 改变用户信息
+ * @param {*} ctx
+ * @param {*} { nickName, picture, city }
+ */
+async function changeInfo (ctx, { nickName, picture, city }) {
+    // 先获取用户名
+    const { userName } = ctx.session.userInfo
+    if (!nickName) nickName = userName
+
+    // 调用接口service 
+    const res = await updateUserInfo({ 
+        newNickName: nickName,
+        newPicture: picture,
+        newCity: city,
+    }, { userName })
+    
+    // 处理结果
+    if (res) {
+        Object.assign(ctx.session.userInfo, { nickName, picture, city })
+        return new SuccessModel()
+    } else {
+        return new ErrorModel(changeInfoFailInfo)
+    }
+}
+
+
+/**
+ * 更改密码
+ * @param {*} password
+ * @param {*} newPassword
+ */
+async function changePassword (ctx, password, newPassword) {
+    const { userName } = ctx.session.userInfo
+    const res = await updateUserInfo({
+        newPassword: doCrypto(newPassword),
+    }, {
+        userName,
+        password: doCrypto(password)
+    })
+    // 处理结果
+    if (res) {
+        return new SuccessModel()
+    }
+    return new ErrorModel(changePasswordFailInfo)
+}
+
 module.exports = {
     isExist,
     register,
-    login
+    login,
+    logout,
+    changeInfo,
+    changePassword,
 }

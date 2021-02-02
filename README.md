@@ -45,9 +45,11 @@
 
 ##### 开发：
 
-​	1.nodemon：开发环境下不重启的刷新代码
+  1.nodemon：开发环境下不重启的刷新代码
 
-​	2. Corss-env: 设置环境变量
+	2. Corss-env: 设置环境变量
+ 	3. formidable-upload-koa：文件上传
+ 	4. Fse : node fs 模块扩展，可以使用promise
 
 ##### git规范：
 

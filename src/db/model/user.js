@@ -39,6 +39,4 @@ const User = seq.define('user', {
     },
 })
 
-module.exports = {
-    User
-}
+module.exports = User

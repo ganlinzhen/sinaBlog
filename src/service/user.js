@@ -3,7 +3,7 @@
  * @author zhenganlin
 */
 
-const { User } = require('../db/model/user')
+const { User } = require('../db/model/index')
 const { formatUser } = require('./_format')
 
 /**
@@ -49,7 +49,38 @@ async function createUser({ userName, password, gender, nickName }) {
     return result.dataValues
 }
 
+/**
+ * @description 更新用户信息
+ * @param {Object} 
+*/
+async function updateUserInfo (
+    { newNickName, newPicture, newCity, newPassword },
+    { userName, password },
+) {
+    // 拼接修改内容
+    const updataData = {}
+    if (newNickName) updataData.nickName = newNickName
+    if (newPicture) updataData.picture = newPicture
+    if (newCity) updataData.city = newCity
+    if (newPassword) updataData.password = newPassword
+
+    // 查询条件
+    const whereOpt = {
+        userName: userName
+    }
+    if (password) whereOpt.password = password
+
+    // 修改数据记录
+    const result = await User.update(updataData, {
+        where: whereOpt
+    })
+
+    // 修改的行数
+    return result[0] > 0
+}
+
 module.exports = {
     getUserInfo,
-    createUser
+    createUser,
+    updateUserInfo
 }

@@ -4,23 +4,22 @@
  */
 
 const router = require('koa-router')()
-const { loginCheck } = require('../../middlewares/loginChecks')
-const koaFrom = require('formidable-upload-koa')
+const koaForm = require('formidable-upload-koa')
+const { loginCheck } = require('../../middlewares/loginCheck')
 const { saveFile } = require('../../controller/utils')
 
 router.prefix('/api/utils')
 
-// 上传图片
-router.post('/upload', loginCheck, koaFrom(), async (ctx, next) => {
+router.post('/upload', loginCheck, koaForm(), async (ctx, next) => {
     const file = ctx.req.files['file']
-    if (!file) {
-        return
-    }
+    if(!file) return 
+    
     const { size, path, name, type } = file
+    // koaForm 中间件执行之后会在默认目录下存储文件，我们需要拿到他重新存到我们需要的地方
     ctx.body = await saveFile({
+        size,
         name,
         type,
-        size,
         filePath: path
     })
 })
