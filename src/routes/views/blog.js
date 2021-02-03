@@ -62,8 +62,8 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
 router.get('/square', loginRedirect, async (ctx, next) => {
     // 获取微博数据，第一页
     const result = await getSquareBlogList(0)
-    const { isEmpty, blogList, pageSize, pageIndex, count } = result.data || {}
-
+    console.log(result)
+    const { isEmpty, blogList, pageSize, pageIndex=0, count } = result.data || {}
     await ctx.render('square', {
         blogData: {
             isEmpty,
