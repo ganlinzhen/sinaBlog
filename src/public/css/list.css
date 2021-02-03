@@ -15,14 +15,28 @@
 
 .weibo-list .item-wrapper .content {
     line-height: 1.5;
+    overflow: hidden;
+    position: relative;
 }
 
+.weibo-list .item-wrapper .content .imageWrap {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: 10px;
+}
 .weibo-list .item-wrapper .content .blog-img {
     float: right;
     width: 100px;
     margin-left: 10px;
 }
-
+.weibo-list .item-wrapper .content>span {
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .weibo-list .item-wrapper .info {
     margin-top: 10px;
     font-size: 13px;

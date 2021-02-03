@@ -3,14 +3,14 @@
         <img class="user-picture" src="<%= blog.user.picture%>"/>
         <div class="content clear-fix">
             <% if (blog.image) { %>
-            <a href="<%= blog.image%>" target="_blank">
+            <a class="imageWrap" href="<%= blog.image%>" target="_blank">
                 <img class="blog-img" src="<%= blog.image%>"/>
             </a>
             <% } %>
             <a href="/profile/<%= blog.user.userName%>">
                 <%= blog.user.nickName%>
             </a>:
-            <span><%- blog.contentFormat%></span>
+            <span><%= blog.content%></span>
         </div>
         <div class="info">
             <span><%= blog.createdAtFormat%></span>
