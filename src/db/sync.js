@@ -5,8 +5,7 @@
 
 const seq = require('./seq')
 
-require('./model/User')
-require('./model/Blog')
+require('./model/index')
 
 // 测试连接
 seq.authenticate().then(() => {
