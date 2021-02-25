@@ -154,6 +154,12 @@ router.get('getUserInfo', async (ctx, next) => {
 
 ```
 
+> sequelize 操作错误的处理
+
+* 增：用try---catch
+* 删、改：返回影响的条数，根据数量判断成功失败
+* 查：不用做错误处理，默认一般不会出问题
+
 > 关系型数据库 三大范式
 
 ```js

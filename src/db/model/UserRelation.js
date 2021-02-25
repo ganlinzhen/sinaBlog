@@ -11,10 +11,10 @@ const UserRelation = seq.define('userRelation', {
         type: INTEGER,
         allowNull: false,
     },
-    followerId: {
+    bloggerId: {
         type: INTEGER,
         allowNull: false,
     }
-});
+})
 
 module.exports = UserRelation

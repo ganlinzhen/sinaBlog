@@ -10,15 +10,17 @@ const { formatUser } = require('./_format')
  * @param {*} userName
  * @param {*} password
  */
-async function getUserInfo(userName, password) {
+async function getUserInfo(userName, password, userId) {
     // 查询条件
-    const whereOpt = {
+    let whereOpt = {
         userName
     }
     if (password) {
         whereOpt.password = password
     }
-
+    if (userId) {
+        whereOpt = { id: userId }
+    }
     // 查询
     const result = await User.findOne({
         attributes: ['id','userName','nickName','picture','gender','city'],

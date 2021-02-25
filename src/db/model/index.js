@@ -20,12 +20,11 @@ Blog.belongsTo(User, {
 // 意思相同的是: 在 UserRelation表中添加 User的主键作为外键
 // 唯一的不同是: 代表了连表查询的两个方向
 UserRelation.belongsTo(User, {
-    foreignKey: 'followerId'
-})
-
+    foreignKey: 'bloggerId'
+}) // 表示：如果查询 UserRelation并关联User的话，会根据bloggerId来关联User
 User.hasMany(UserRelation, {
     foreignKey: 'userId'
-})
+}) // 表示：如果查询 User并关联UserRelation的话，会根据userId来关联User
 
 module.exports = {
     User,
