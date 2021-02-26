@@ -6,12 +6,48 @@ const router = require('koa-router')()
 const { loginRedirect } = require('../../middlewares/loginCheck')
 const { isExist } = require('../../controller/user')
 const { getProfileBlogList } = require('../../controller/blog-profile')
+const { getHomeBlogList } = require('../../controller/blog-index')
 const { getSquareBlogList } = require('../../controller/blog-square')
 const { getFansData, getFollowersData } = require('../../controller/user-relation')
 
 // 博客首页
 router.get('/', loginRedirect, async (ctx, next) => {
-    await ctx.render('index')
+    const userInfo = ctx.session.userInfo
+    const { id: userId } = userInfo
+
+    // 获取微博第一页数据
+    const result = await getHomeBlogList(userId)
+    const { isEmpty, blogList, pageSize, pageIndex, count } = result.data
+
+    // 获取粉丝数据
+    const fansResult = await getFansData(userId)
+    const { count: fansCount, userList: fansList } = fansResult.data
+    
+    // 获取关注人列表
+    const followersResult = await getFollowersData(userId)
+    const { count: followersCount, list: followersList } = followersResult.data
+
+    await ctx.render('index', {
+        userData: {
+            userInfo,
+            fansData: {
+                count: fansCount,
+                list: fansList
+            },
+            followersData: {
+                count: followersCount,
+                list: followersList
+            },
+            // atCount
+        },
+        blogData: {
+            isEmpty,
+            blogList,
+            pageSize,
+            pageIndex,
+            count
+        }
+    })
 })
 
 // 个人主页
@@ -48,10 +84,10 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
 
     // 获取粉丝数据
     const fansResult = await getFansData(curUserInfo.id)
-    const { count: fansCount, userList: fanList } = fansResult.data
+    const { count: fansCount, userList: fansList } = fansResult.data
     
     // 是否关注了当前用户
-    const amIFollowed = fanList.some(item => item.userName === myUserName)
+    const amIFollowed = fansList.some(item => item.userName === myUserName)
     
     // 获取关注人列表
     const followersResult = await getFollowersData(curUserInfo.id)
@@ -70,7 +106,7 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
             isMe,
             fansData: {
                 count: fansCount,
-                list: fanList,
+                list: fansList,
             },
             followersData: {
                 count: followersCount,

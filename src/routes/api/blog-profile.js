@@ -11,6 +11,7 @@ const { follow, unFollow } = require('../../controller/user-relation')
 
 router.prefix('/api/profile')
 
+// 个人主页加载更多
 router.get('/loadmore/:userName/:pageIndex', loginCheck, async (ctx,next) => {
     let { userName, pageIndex } = ctx.params
     pageIndex = parseInt(pageIndex)

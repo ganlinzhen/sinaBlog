@@ -15,6 +15,7 @@ const {
 const userValidate = require('../../validator/user')
 const { genValidator } = require('../../middlewares/validator')
 const { loginCheck } = require('../../middlewares/loginCheck')
+const { getFollowersData } = require('../../controller/user-relation')
 
 router.prefix('/api/user')
 
@@ -65,6 +66,18 @@ router.patch('/changePassword', loginCheck, genValidator(userValidate), async (c
 // 用户退出登录
 router.post('/logout', loginCheck, async (ctx, next) => {
     ctx.body = await logout(ctx)
+})
+
+
+// 获取@列表，即关注人列表
+router.get('/getAtList', loginCheck, async (ctx,next) => {
+    const { id: userId } = ctx.session.userInfo
+    const result = await getFollowersData(userId)
+    const bloggerList = result.data.list
+    const list = bloggerList.map(user => {
+        return `${user.nickName} - ${user.userName}`
+    })
+    ctx.body = list
 })
 
 module.exports = router
