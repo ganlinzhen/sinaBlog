@@ -147,7 +147,28 @@ router.get('/square', loginRedirect, async (ctx, next) => {
 
 // @ME 微博列表
 router.get('/at-me', loginRedirect, async (ctx, next) => {
-    
+    const { id: userId } = ctx.session.userInfo
+
+    // 获取@的数量
+    const atCountResult = await getAtMeCount(userId)
+    const { count: atCount } = atCountResult.data
+
+    // 获取@列表，第一页数据
+    const result = await getAtMeBlogList(userId)
+    const { isEmpty, blogList, pageSize, pageIndex=0, count } = result.data
+
+    // 渲染页面
+    await ctx.render('atMe', {
+        atCount,
+        blogData: {
+            isEmpty,
+            blogList,
+            pageSize,
+            pageIndex,
+            count
+        }
+    })
+    // 标记为已读
 })
 
 module.exports = router

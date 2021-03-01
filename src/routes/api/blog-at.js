@@ -4,7 +4,7 @@
  */
 
 const router = require('koa-router')()
-const { loginCheck } = require('../../middlewares/loginChecks')
+const { loginCheck } = require('../../middlewares/loginCheck')
 const { getAtMeBlogList } = require('../../controller/blog-at')
 const { getBlogListStr } = require('../../utils/blog')
 
@@ -13,12 +13,13 @@ router.prefix('/api/atMe')
 // 加载更多
 router.get('/loadMore/:pageIndex', loginCheck, async (ctx, next) => {
     let { pageIndex } = ctx.params
+    console.log('@页，获取更多！')
     pageIndex = parseInt(pageIndex)  // 转换 number 类型
     const { id: userId } = ctx.session.userInfo
     const result = await getAtMeBlogList(userId, pageIndex)
     // 渲染模板
     result.data.blogListTpl = getBlogListStr(result.data.blogList)
-
+    console.log('@加载更多：', result)
     ctx.body = result
 })
 
