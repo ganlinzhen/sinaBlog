@@ -2,8 +2,8 @@
  * @description 数据模型管理
  * @author zhenganlin
 */
-const User = require('./User.js')
 const Blog = require('./Blog')
+const User = require('./User')
 const UserRelation = require('./UserRelation')
 const AtRelation = require('./AtRelation')
 
