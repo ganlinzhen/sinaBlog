@@ -58,7 +58,6 @@ async function markAsRead(userId) {
     } catch (ex) {
         console.error(ex)
     }
-
     // 不需要返回 SuccessModel 或者 ErrorModel
 }
 
