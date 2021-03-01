@@ -27,11 +27,11 @@ if (isProd) {
 
     MYSQL_CONF = {
         // 线上的 mysql 配置
-        host: 'localhost',
+        host: '127.0.0.1',
         user: 'root',
-        password: 'Mysql_2018',
+        password: '7340aaec89a094dd',
         port: '3306',
-        database: 'koa2_weibo_db'
+        database: 'myblog'
     }
 
 }
