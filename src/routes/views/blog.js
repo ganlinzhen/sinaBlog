@@ -9,6 +9,7 @@ const { getProfileBlogList } = require('../../controller/blog-profile')
 const { getHomeBlogList } = require('../../controller/blog-index')
 const { getSquareBlogList } = require('../../controller/blog-square')
 const { getFansData, getFollowersData } = require('../../controller/user-relation')
+const { getAtMeCount, getAtMeBlogList, markAsRead } = require('../../controller/blog-at')
 
 // 博客首页
 router.get('/', loginRedirect, async (ctx, next) => {
@@ -27,8 +28,13 @@ router.get('/', loginRedirect, async (ctx, next) => {
     const followersResult = await getFollowersData(userId)
     const { count: followersCount, list: followersList } = followersResult.data
 
+    // 获取 @ 数量
+    const atCountResult = await getAtMeCount(userId)
+    const { count: atCount } = atCountResult.data
+
     await ctx.render('index', {
         userData: {
+            isMe: true,
             userInfo,
             fansData: {
                 count: fansCount,
@@ -38,7 +44,7 @@ router.get('/', loginRedirect, async (ctx, next) => {
                 count: followersCount,
                 list: followersList
             },
-            // atCount
+            atCount
         },
         blogData: {
             isEmpty,
@@ -93,6 +99,10 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     const followersResult = await getFollowersData(curUserInfo.id)
     const { count: followersCount, list: followersList } = followersResult.data
 
+    // 获取 @ 数量
+    const atCountResult = await getAtMeCount(myUserInfo.id)
+    const { count: atCount } = atCountResult.data
+
     await ctx.render('profile', {
         blogData: {
             isEmpty,
@@ -102,8 +112,8 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
             count
         },
         userData: {
-            userInfo: curUserInfo,
             isMe,
+            userInfo: curUserInfo,
             fansData: {
                 count: fansCount,
                 list: fansList,
@@ -112,7 +122,8 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
                 count: followersCount,
                 list: followersList
             },
-            amIFollowed
+            amIFollowed,
+            atCount
         }
     })
 })
@@ -132,6 +143,11 @@ router.get('/square', loginRedirect, async (ctx, next) => {
             count
         }
     })
+})
+
+// @ME 微博列表
+router.get('/at-me', loginRedirect, async (ctx, next) => {
+    
 })
 
 module.exports = router
