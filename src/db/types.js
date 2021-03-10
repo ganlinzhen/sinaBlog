@@ -6,7 +6,7 @@
 const Sequelize = require('sequelize')
 
 module.exports = {
-    STRING: Sequelize.STRING,
+    STRING: Sequelize.STRING(126),
     DECIMAL: Sequelize.DECIMAL,
     TEXT: Sequelize.TEXT,
     INTEGER: Sequelize.INTEGER,
