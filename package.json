@@ -31,7 +31,8 @@
     "koa-views": "^6.2.0",
     "mysql2": "^2.2.5",
     "redis": "^3.0.2",
-    "sequelize": "^6.4.0",
+    "sequelize": "5",
+    "webpack": "^5.24.2",
     "xss": "^1.0.8"
   },
   "devDependencies": {
